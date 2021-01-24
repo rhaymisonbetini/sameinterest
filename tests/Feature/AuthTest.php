@@ -1,14 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
-use App\Http\Controllers\Auth\AuthController;
 use Tests\TestCase;
-use Illuminate\Http\Request;
 
 class AuthTest extends TestCase
 {
-
 
     /** @test */
     public function successLogin()

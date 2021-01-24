@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +16,12 @@ use App\Http\Controllers\Auth\AuthController;
 */
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => 'api','prefix' => 'auth'], function () {
+Route::get('/user/{id}', [UserController::class,'getUser']);
+
+Route::post('/invite', [UserController::class,'inviteFriend']);
+Route::post('/aprove', [UserController::class,'aproveFriend']);
+Route::post('/refuse', [UserController::class,'refuseFriend']);
+
+Route::group(['middleware' => 'api'], function () {
 
 });

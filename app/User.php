@@ -29,6 +29,31 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    public function hasInterest()
+    {
+        return $this->hasMany('App\UserHasInterest','id_user','id');
+    }
+
+    public function hasFriend()
+    {
+        return $this->hasMany('App\UserHasFriend','id_user','id');
+    }
+
+    public function imFriend()
+    {
+        return $this->hasMany('App\UserHasFriend','id_friend','id');
+    }
+
+    public function friendRequest()
+    {
+        return $this->hasMany('App\UserFriendRequest','id_user','id');
+    }
+
+    public function myRequest()
+    {
+        return $this->hasMany('App\UserFriendRequest','id_friend','id');
+    }
+
     public function getJWTIdentifier() {
         return $this->getKey();
     }
