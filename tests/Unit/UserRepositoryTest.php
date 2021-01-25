@@ -37,7 +37,7 @@ class UserRepositoryTest extends TestCase
             'friendRequest.friend'
         );
 
-        $this->assertEquals($testUser, $findUser,'GET_USER_BY_ID_SUCCESS');
+        $this->assertEquals($testUser, $findUser,'GET_USER_BY_ID');
 
     }
 }

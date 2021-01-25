@@ -21,6 +21,8 @@ Route::get('/user/{id}', [UserController::class,'getUser']);
 Route::post('/invite', [UserController::class,'inviteFriend']);
 Route::post('/aprove', [UserController::class,'aproveFriend']);
 Route::post('/refuse', [UserController::class,'refuseFriend']);
+Route::post('/block', [UserController::class,'blockFriend']);
+Route::post('/delete', [UserController::class,'deleteFriend']);
 
 Route::group(['middleware' => 'api'], function () {
 

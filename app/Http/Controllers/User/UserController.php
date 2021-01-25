@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserHasFriendRepository;
+use App\Repositories\UserFriendRequestRepository;
 use App\Repositories\UserRepository;
 use App\Validators\AuthValidators;
 use Illuminate\Http\Request;
@@ -12,16 +12,16 @@ class UserController extends Controller
 {
 
     private $userRepository;
-    private $hasFriendRepository;
+    private $hasFriendrequestRepository;
     private $validators;
 
     public function __construct(
         UserRepository $userRepository,
-        UserHasFriendRepository $hasFriendRepository,
+        UserFriendRequestRepository $hasFriendrequestRepository,
         AuthValidators $validators)
     {
         $this->userRepository = $userRepository;
-        $this->hasFriendRepository = $hasFriendRepository;
+        $this->hasFriendrequestRepository = $hasFriendrequestRepository;
         $this->validators = $validators;
     }
 
@@ -37,22 +37,84 @@ class UserController extends Controller
       
        $validate = $this->validators->hasFriendValidators($request);
        if($validate){
-            $userHasfriend = $this->hasFriendRepository->inviteFriend($request);
-            return response()->json($userHasfriend,200);
+
+            $verifyIfExistInvite = $this->hasFriendrequestRepository->verifyIfHasRequestFriend($request);
+            if(!$verifyIfExistInvite){
+                $userHasfriend = $this->hasFriendrequestRepository->inviteFriend($request);
+                return response()->json($userHasfriend,200);
+            }else{
+                return response()->json('UNAUTHORIZED',401);
+            }
        }
        return response()->json($validate, 422);
     }
 
     public function  aproveFriend(Request $request)
     {
-        $userHasFriend = $this->hasFriendRepository->getStatusPeedingByUserAndFriendId($request);
-        if($userHasFriend){
+
+        $validate = $this->validators->hasFriendValidators($request);
+
+        if($validate){
+            $userHasFriend = $this->hasFriendrequestRepository->getStatusPeedingByUserAndFriendId($request);
+            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+                $userHasFriend = $this->hasFriendrequestRepository->aproveFriend($userHasFriend);
+                return response()->json($userHasFriend,200);
+            }else{
+                return response()->json('UNAUTHORIZED',401);
+            }
         }
+        return response()->json($validate, 422);
+
     }
 
     public function  refuseFriend(Request $request)
     {
 
+        $validate = $this->validators->hasFriendValidators($request);
+
+        if($validate ){
+            $userHasFriend = $this->hasFriendrequestRepository->getStatusPeedingToRefuseByUserAndFriendId($request);
+            if($userHasFriend && $request->id_user == $userHasFriend->id_friend){
+                $userHasFriend = $this->hasFriendrequestRepository->refuseFriend($userHasFriend);
+                return response()->json($userHasFriend,200);
+            }else{
+                return response()->json('UNAUTHORIZED',401);
+            }
+        }
+        return response()->json($validate, 422);
+    }
+
+    public function  blockFriend(Request $request)
+    {
+
+        $validate = $this->validators->hasFriendValidators($request);
+
+        if($validate ){
+            $userHasFriend = $this->hasFriendrequestRepository->getByUserAndFriendId($request);
+            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+                $userHasFriend = $this->hasFriendrequestRepository->blocked($userHasFriend);
+                return response()->json($userHasFriend,200);
+            }else{
+                return response()->json('UNAUTHORIZED',401);
+            }
+        }
+        return response()->json($validate, 422);
+    }
+
+    public function  deleteFriend(Request $request)
+    {
+        $validate = $this->validators->hasFriendValidators($request);
+
+        if($validate ){
+            $userHasFriend = $this->hasFriendrequestRepository->getByUserAndFriendId($request);
+            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+                $userHasFriend = $this->hasFriendrequestRepository->delete($userHasFriend);
+                return response()->json($userHasFriend,200);
+            }else{
+                return response()->json('UNAUTHORIZED',401);
+            }
+        }
+        return response()->json($validate, 422);
     }
 
 }
