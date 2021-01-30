@@ -73,8 +73,8 @@ class UserFriendRequestRepositoryTest extends TestCase
             'id_friend'  => 2,
         ]);
 
-        $userHasFriend = UserFriendRequest::where('id_user', $request->id_friend)
-            ->where('id_friend', $request->id_user)
+        $userHasFriend = UserFriendRequest::where('id_user', $request->id_user)
+            ->where('id_friend',  $request->id_friend )
             ->where('status', $this->pedding)
             ->first();
 
@@ -106,9 +106,21 @@ class UserFriendRequestRepositoryTest extends TestCase
     /** @test */
     public function inviteFriendTest()
     {
+
+        $user1 = 1;
+        $user2 = 2;
+        $verify = false;
+        do{
+            $verify = UserFriendRequest::where('id_user',$user1)->where('id_friend', $user2 )->first();
+            if($verify){
+                $user1 ++;
+                $user2 ++;
+            }
+        } while ($verify);
+
         $request = new Request([
-            'id_user'   => 1,
-            'id_friend'  => 2,
+            'id_user'   => $user1,
+            'id_friend'  => $user2,
         ]);
         
         $userFriendRequestRepository = new UserFriendRequestRepository;

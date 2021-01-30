@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Interest;
 use App\User;
+use App\UserFriendRequest;
 use App\UserHasFriend;
 use App\UserHasInterest;
 use Illuminate\Database\Seeder;
@@ -41,6 +42,8 @@ class UserSeed extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $this->createUser();
         }
+
+        $this->createRequestForTest();
     }
 
     public function createUser()
@@ -110,6 +113,15 @@ class UserSeed extends Seeder
             $userHasFriend->save();
             return;
         }
+    }
+
+    public function createRequestForTest()
+    {
+        $userHasFriend = new UserFriendRequest;
+        $userHasFriend->id_user = 1;
+        $userHasFriend->id_friend = 2;
+        $userHasFriend->status = 'PENDING';
+        $userHasFriend->save();
     }
 
 }

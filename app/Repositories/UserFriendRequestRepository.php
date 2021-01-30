@@ -36,10 +36,11 @@ class UserFriendRequestRepository
 
     public function getStatusPeedingToRefuseByUserAndFriendId($request)
     {
-        return UserFriendRequest::where('id_user', $request->id_friend)
-            ->where('id_friend', $request->id_user)
+        return UserFriendRequest::where('id_user', $request->id_user)
+            ->where('id_friend', $request->id_friend)
             ->where('status', $this->pedding)
             ->first();
+
     }
 
     public function getByUserAndFriendId($request)

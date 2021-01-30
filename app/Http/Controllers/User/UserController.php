@@ -34,10 +34,8 @@ class UserController extends Controller
 
     public function  inviteFriend(Request $request)
     {
-      
        $validate = $this->validators->hasFriendValidators($request);
        if($validate){
-
             $verifyIfExistInvite = $this->hasFriendrequestRepository->verifyIfHasRequestFriend($request);
             if(!$verifyIfExistInvite){
                 $userHasfriend = $this->hasFriendrequestRepository->inviteFriend($request);
@@ -56,7 +54,7 @@ class UserController extends Controller
 
         if($validate){
             $userHasFriend = $this->hasFriendrequestRepository->getStatusPeedingByUserAndFriendId($request);
-            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+            if($userHasFriend ){
                 $userHasFriend = $this->hasFriendrequestRepository->aproveFriend($userHasFriend);
                 return response()->json($userHasFriend,200);
             }else{
@@ -72,9 +70,9 @@ class UserController extends Controller
 
         $validate = $this->validators->hasFriendValidators($request);
 
-        if($validate ){
+        if($validate){
             $userHasFriend = $this->hasFriendrequestRepository->getStatusPeedingToRefuseByUserAndFriendId($request);
-            if($userHasFriend && $request->id_user == $userHasFriend->id_friend){
+            if($userHasFriend){
                 $userHasFriend = $this->hasFriendrequestRepository->refuseFriend($userHasFriend);
                 return response()->json($userHasFriend,200);
             }else{
@@ -91,7 +89,7 @@ class UserController extends Controller
 
         if($validate ){
             $userHasFriend = $this->hasFriendrequestRepository->getByUserAndFriendId($request);
-            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+            if($userHasFriend ){
                 $userHasFriend = $this->hasFriendrequestRepository->blocked($userHasFriend);
                 return response()->json($userHasFriend,200);
             }else{
@@ -107,7 +105,7 @@ class UserController extends Controller
 
         if($validate ){
             $userHasFriend = $this->hasFriendrequestRepository->getByUserAndFriendId($request);
-            if($userHasFriend && $request->id_user == $userHasFriend->id_user){
+            if($userHasFriend ){
                 $userHasFriend = $this->hasFriendrequestRepository->delete($userHasFriend);
                 return response()->json($userHasFriend,200);
             }else{
