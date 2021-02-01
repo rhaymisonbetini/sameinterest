@@ -17,6 +17,8 @@ class CreateUserHasInterestsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_interest');
+            $table->integer('progress')->default(0);
+            $table->string('nivel')->default('Iniciante');
             $table->timestamps();
         });
     }

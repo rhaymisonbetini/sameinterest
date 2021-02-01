@@ -91,6 +91,18 @@ class UserSeed extends Seeder
         $userHasInteres = new UserHasInterest;
         $userHasInteres->id_user = $id;
         $userHasInteres->id_interest = Interest::inRandomOrder()->first()->id;
+        $userHasInteres->progress = rand(0, 100);
+
+        if($userHasInteres->progress  <= 25 ){
+            $userHasInteres->nivel = 'Iniciante';
+        }else if ($userHasInteres->progress  > 25 && $userHasInteres->progress <= 50){
+            $userHasInteres->nivel = 'Intermediário';
+        }else if ($userHasInteres->progress  > 50 && $userHasInteres->progress <= 75){
+            $userHasInteres->nivel = 'Profissional';
+        }else if ($userHasInteres->progress  > 75){
+            $userHasInteres->nivel = 'Hardcore';
+        }
+
         $exists = UserHasInterest::where('id_user', $id)->where('id_interest', $userHasInteres->id_interest)->first();
         if($exists){
             $this->userHasInterest($id);
